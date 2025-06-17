@@ -1332,7 +1332,20 @@ async function exportToPDF() {
         /**
          * Ім'я PDF-файлу.
          */
-        let fileName = 'document.pdf'
+        let fileName = 'document.pdf';
+
+        // Допоміжна функція для форматування дати у назві файлу
+        const formatDateForFilename = (dateStr) => {
+            if (!dateStr) return '';
+            try {
+                const date = new Date(dateStr);
+
+                return date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            } catch (e) {
+                console.error("Помилка форматування дати для назви файлу:", e);
+                return dateStr;
+            }
+        };
 
         switch (currentDocumentType) {
             case 'cv':
@@ -1342,12 +1355,12 @@ async function exportToPDF() {
                 break;
             case 'letter':
                 const recipientName = currentDocument.data.recipientName || '';
-                const letterDate = currentDocument.data.date || '';
+                const letterDate = formatDateForFilename(currentDocument.data.date);
                 fileName = `Лист_${recipientName.trim()}${letterDate ? '_' + letterDate : ''}.pdf`.replace(/\s+/g, '_');
                 break;
             case 'protocol':
                 const protocolNumber = currentDocument.data.protocolNumber || '';
-                const protocolDate = currentDocument.data.date || '';
+                const protocolDate = formatDateForFilename(currentDocument.data.date);
                 fileName = `Протокол_${protocolNumber.trim()}${protocolDate ? '_' + protocolDate : ''}.pdf`.replace(/\s+/g, '_');
                 break;
         }
