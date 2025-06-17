@@ -1,0 +1,35 @@
+/* Анімація для обов'язкових полів */
+@keyframes blink-red {
+    0% { border-color: initial; }
+    50% { border-color: #fd0000; }
+    100% { border-color: initial; }
+}
+
+.blink-red {
+    animation: blink-red 1s infinite;
+}
+
+/* Стилі для FAQ */
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1.0s ease-out;
+}
+
+.faq-content.active {
+    max-height: 2000px;
+    transition: max-height 1.0s ease-in;
+}
+
+.faq-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+.faq-header i.fa-chevron-down {
+    transition: transform 0.5s ease;
+}
+
+.faq-header.active i.fa-chevron-down {
+    transform: rotate(180deg);
+} 
