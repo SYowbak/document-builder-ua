@@ -1329,8 +1329,30 @@ async function exportToPDF() {
             fontSize: 10,
             alignment: 'left'
         };
+        /**
+         * Ім'я PDF-файлу.
+         */
+        let fileName = 'document.pdf'
 
-        pdfMake.createPdf(docDefinition).download('document.pdf');
+        switch (currentDocumentType) {
+            case 'cv':
+                const firstName = currentDocument.data.firstName || '';
+                const lastName = currentDocument.data.lastName || '';
+                fileName = `Резюме_${firstName.trim()}_${lastName.trim()}.pdf`.replace(/\s+/g, '_');
+                break;
+            case 'letter':
+                const recipientName = currentDocument.data.recipientName || '';
+                const letterDate = currentDocument.data.date || '';
+                fileName = `Лист_${recipientName.trim()}${letterDate ? '_' + letterDate : ''}.pdf`.replace(/\s+/g, '_');
+                break;
+            case 'protocol':
+                const protocolNumber = currentDocument.data.protocolNumber || '';
+                const protocolDate = currentDocument.data.date || '';
+                fileName = `Протокол_${protocolNumber.trim()}${protocolDate ? '_' + protocolDate : ''}.pdf`.replace(/\s+/g, '_');
+                break;
+        }
+
+        pdfMake.createPdf(docDefinition).download(fileName);
         
         const message = document.createElement('div');
         message.innerHTML = `
